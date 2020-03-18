@@ -1,27 +1,38 @@
 <div class="login-wrapper">
+    <img src="assets/login-page/uBan-asset.svg" alt="">
+    <div class="logo">uBan</div>
     <div class="card">
     
         <div class="title">
-            Login Form
+            Login to uBan 
         </div>
     
         <form>
             <div class="group">
-                <input type="text" id="email">
-                <label for="email">E-mail</label>
+                <input type="text" id="email" placeholder="e-mail">
             </div>
     
             <div class="group">
-                <input type="password" id="password">
-                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="password">
             </div>
+
+            <button type="submit">Login</button>
         </form>
         
         <hr>
-    
-        <div (click)="initLogin()" class="google" style="background: red; color: white; width: max-content; padding: 10px 20px;">
-            Google
+        
+        <div class="btn social">
+            <img src="assets/login-page/google-logo-light.svg" width="25" alt="">
+            <div (click)="initLogin()" class="google">
+                Login with Google
+            </div>
         </div>
-
+    
+        <div class="btn social">
+            <img src="assets/login-page/facebook-logo-light.svg" width="25" alt="">
+            <div (click)="initLogin()" class="facebook">
+                Login with Facebook
+            </div>
+        </div>
     </div>
 </div>

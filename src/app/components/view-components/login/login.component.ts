@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   private _authConfig: AuthConfig = {
     issuer: 'https://accounts.google.com',
-    redirectUri: 'http://localhost:4200/oauth',
+    redirectUri: 'http://localhost:4200/verify/google/',
     clientId: '647941072276-d6m34gl68i8ape6e4u86equevd1h5foc.apps.googleusercontent.com',
     scope: 'openid profile email',
     strictDiscoveryDocumentValidation: false
