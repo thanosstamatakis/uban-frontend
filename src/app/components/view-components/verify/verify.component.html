@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="card" *ngIf="!loading">
+        <img class="profilePicture" src="{{userData.profilePicture}}" alt="">
+        <div class="message">
+            <h1>
+                Welcome, <br>
+                {{userData.displayName}}
+            </h1>
+        </div>
+        <div class="animation">
+            <animation-auth-success></animation-auth-success>
+        </div>
+        <div class="provider" *ngIf="provider=='google'"><img src="assets/login-page/btn_google_light_focus_ios.svg" width="20" alt="">Verified by Google</div>
+        <div class="provider" *ngIf="provider=='facebook'"><img src="assets/login-page/facebook-logo-dark.svg" width="20" alt="">Verified by Facebook</div>
+    </div>
+</div>
