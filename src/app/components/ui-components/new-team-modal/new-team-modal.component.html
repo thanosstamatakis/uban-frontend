@@ -1,0 +1,24 @@
+<div class="wrapper">
+  <ion-icon (click)="closeModal()" name="close"></ion-icon>
+  <div class="title">Add new team</div>
+  <div class="content">
+    <form class="form" [formGroup]="newTeamForm" (ngSubmit)="createNewTeam(newTeamForm.value)">
+      <div class="group">
+        <input autocomplete="off" type="text" formControlName="name" id="name" placeholder="team name" />
+      </div>
+
+      <div class="group">
+        <textarea
+          autocomplete="off"
+          rows="5"
+          formControlName="description"
+          maxlength="100"
+          id="description"
+          placeholder="description"
+        ></textarea>
+      </div>
+
+      <button [disabled]="!newTeamForm.valid" type="submit">Add Team</button>
+    </form>
+  </div>
+</div>
