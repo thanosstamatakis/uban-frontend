@@ -1,1 +1,11 @@
+<!-- Application wide modal -->
+<div [@fade]="getModalState()" id="modal-container" class="hidden"></div>
+<div
+  [@fade]="getModalState()"
+  (@fade.done)="deleteModal($event)"
+  id="overlay"
+  (click)="removeModal()"
+  class="hidden"
+></div>
+
 <router-outlet></router-outlet>
