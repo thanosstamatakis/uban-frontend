@@ -27,7 +27,7 @@ export class VerifyComponent implements OnInit {
     this.userData = await this._auth.signInWithGoogle(this.payload);
     this.loading = false;
     setTimeout(() => {
-      this._router.navigate(['/']);
+      this._router.navigate(['/teams']);
     }, 2300);
   }
 

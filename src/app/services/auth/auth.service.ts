@@ -9,7 +9,9 @@ import { environment } from '@enviroments/environment';
 })
 export class AuthService {
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient) {
+    this.verifyToken();
+  }
 
   // Declarations
   private user = new BehaviorSubject<Object>(null);
@@ -24,7 +26,7 @@ export class AuthService {
       })
     };
 
-    let googleAuthPromise = this._http.get(this.baseUrl + 'google/auth', httpOptions).toPromise();
+    let googleAuthPromise = this._http.get(`${this.baseUrl}google/auth`, httpOptions).toPromise();
     let authData = await Promise.resolve(googleAuthPromise);
     let userData = authData['userData'];
     let token = authData['token'];
@@ -51,6 +53,19 @@ export class AuthService {
   // Remove session jwt
   public removeJWT(token: string) {
     localStorage.removeItem('token');
+  }
+
+  public async verifyToken() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'authorization':  `Bearer ${localStorage.getItem('token')}`,
+      })
+    };
+    let verificationPromise = this._http.get(`${this.baseUrl}verify-token`, httpOptions).toPromise();
+    let verificationData = await Promise.resolve(verificationPromise);
+    let userData = verificationData['userData'];
+    this.user.next(userData);
+    return userData;
   }
 
 }
