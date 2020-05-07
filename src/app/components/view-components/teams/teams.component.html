@@ -1,34 +1,34 @@
 <div class="wrapper">
-    <div class="container" *ngIf="userData">
-        <div class="title">
-            <h1>{{userData.displayName}} teams</h1>
-        </div>
-        <div class="content">
-            <ng-container *ngFor="let team of teams">
-                <div class="team">
-                    <div class="header">
-                        {{team.name}}
-                    </div>
-                    <div class="description">
-                        {{team.description}}
-                    </div>
-                </div>
-            </ng-container>
-            <div (click)="addTeam()" class="team add">
-                <ion-icon name="add-circle"></ion-icon>
-            </div>
-        </div>
+  <div class="container" *ngIf="userData">
+    <div class="title">
+      <h1>{{ userData.displayName }} teams</h1>
     </div>
-    <ul class="circles">
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-            <li><div class="inner"></div></li>
-    </ul>
+    <div class="content">
+      <ng-container *ngFor="let team of teams">
+        <div class="team" [routerLink]="[team._id]">
+          <div class="header">
+            {{ team.name }}
+          </div>
+          <div class="description">
+            {{ team.description }}
+          </div>
+        </div>
+      </ng-container>
+      <div (click)="addTeam()" class="team add">
+        <ion-icon name="add-circle"></ion-icon>
+      </div>
+    </div>
+  </div>
+  <ul class="circles">
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+    <li><div class="inner"></div></li>
+  </ul>
 </div>

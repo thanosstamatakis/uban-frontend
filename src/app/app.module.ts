@@ -23,6 +23,7 @@ import { NewTeamModalComponent } from './components/ui-components/new-team-modal
 // Services
 import { ModalService } from '@services/modal/modal.service';
 import { DomService } from '@services/dom/dom.service';
+import { BuildingTeamComponent } from './components/ui-components/animations/building-team/building-team.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DomService } from '@services/dom/dom.service';
     VerifyComponent,
     AuthSuccessComponent,
     TeamsComponent,
-    NewTeamModalComponent
+    NewTeamModalComponent,
+    BuildingTeamComponent
   ],
   imports: [
     BrowserModule,

@@ -1,37 +1,41 @@
 <div class="root">
-    <div class="navbar has-background-dark">
-      <div class="navbar-brand">
-        <div class="navbar-item">
-          <h1 class="app-name has-gradient-text">uBan <span class="board-name">{{ board.name }}</span></h1>
+  <div class="navbar has-background-dark">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <div class="app-name has-gradient-text">
+          uBan <input *ngIf="teamData" type="text" class="board-name" placeholder="{{ teamData.name }}" />
         </div>
       </div>
     </div>
-  
-    <div class="board">
+  </div>
 
-      <div class="board-wrapper">
-  
-        <div class="board-columns" cdkDropListGroup>
-          <div class="board-column" *ngFor="let column of board.columns">
-  
-            <div class="column-title">
-              {{ column.name }}
-            </div>
-  
-            <div class="tasks-container"
+  <div class="board">
+    <div class="board-wrapper">
+      <div class="board-columns" cdkDropListGroup>
+        <div #columns class="board-column" *ngFor="let column of board.columns; let columnIndex = index">
+          <div class="column-title">
+            <input type="text" placeholder="{{ column.name }}" />
+          </div>
+
+          <div
+            #cards
+            class="tasks-container"
             cdkDropList
             [cdkDropListData]="column.tasks"
-            (cdkDropListDropped)="drop($event)">
-              <div class="task" *ngFor="let item of column.tasks" cdkDrag>
-                {{ item }}
-              </div>
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="task" *ngFor="let item of column.tasks" cdkDrag>
+              <input type="text" placeholder="{{ item }}" />
+            </div>
+            <div class="add-new" (click)="addNewTask(columnIndex)">
+              Add new
             </div>
           </div>
-  
         </div>
-  
+        <div class="board-column add" (click)="addNewColumn()">
+          <ion-icon name="add-circle"></ion-icon>
+        </div>
       </div>
-  
     </div>
-  
   </div>
+</div>
