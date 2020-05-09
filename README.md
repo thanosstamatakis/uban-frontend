@@ -1,5 +1,9 @@
 # Frontend
 
+## Requirements:
+- NodeJS and npm [Install on Windows](https://nodejs.org/en/download/) / [Install on Ubuntu](https://hackernoon.com/how-to-install-node-js-on-ubuntu-16-04-18-04-using-nvm-node-version-manager-668a7166b854)
+- AngularCLI: `npm install -g @angular/cli`
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.10.
 
 ## Development server
