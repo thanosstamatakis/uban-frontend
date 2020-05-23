@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-new-team-modal',
   templateUrl: './new-team-modal.component.html',
-  styleUrls: ['./new-team-modal.component.scss']
+  styleUrls: ['./new-team-modal.component.scss'],
 })
 export class NewTeamModalComponent implements OnInit {
   newTeamForm: FormGroup;
@@ -21,7 +21,7 @@ export class NewTeamModalComponent implements OnInit {
   ) {
     this.newTeamForm = _formBuilder.group({
       name: [null, Validators.required],
-      description: [null, Validators.compose([Validators.required, Validators.maxLength(100)])]
+      description: [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
     });
   }
 
@@ -33,8 +33,9 @@ export class NewTeamModalComponent implements OnInit {
   // Calls api to create a new team
   createNewTeam(payload: Object) {
     console.log(payload);
-    this._team.addNewTeam(payload).subscribe(result => {
+    this._team.addNewTeam(payload).subscribe((result) => {
       this.showAnimation = true;
+      console.log('Add team result:', result);
       setTimeout(() => {
         this._router.navigate(['/']);
         this.closeModal();

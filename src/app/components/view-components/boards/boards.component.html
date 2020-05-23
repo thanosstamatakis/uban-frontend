@@ -3,7 +3,7 @@
     <div class="navbar-brand">
       <div class="navbar-item">
         <div class="app-name has-gradient-text">
-          uBan <input *ngIf="teamData" type="text" class="board-name" placeholder="{{ teamData.name }}" />
+          uBan <input *ngIf="teamName" type="text" class="board-name" placeholder="{{ teamName }}" />
         </div>
       </div>
     </div>
@@ -14,20 +14,29 @@
       <div class="board-columns" cdkDropListGroup>
         <div #columns class="board-column" *ngFor="let column of board.columns; let columnIndex = index">
           <div class="column-title">
-            <input type="text" placeholder="{{ column.name }}" />
+            <input
+              (keyup)="updateColumnName($event.target.value, column._id)"
+              type="text"
+              placeholder="{{ column.name }}"
+            />
           </div>
 
           <div
             #cards
             class="tasks-container"
             cdkDropList
-            [cdkDropListData]="column.tasks"
-            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="column.cards"
+            (cdkDropListDropped)="drop($event, column._id)"
+            (cdkDropListExited)="exit($event, column._id)"
           >
-            <div class="task" *ngFor="let item of column.tasks" cdkDrag>
-              <input type="text" placeholder="{{ item }}" />
+            <div class="task" *ngFor="let item of column.cards" cdkDrag>
+              <input
+                (keyup)="updateCardName($event.target.value, item._id, column._id)"
+                type="text"
+                placeholder="{{ item.name }}"
+              />
             </div>
-            <div class="add-new" (click)="addNewTask(columnIndex)">
+            <div class="add-new" (click)="addNewTask(columnIndex, column._id)">
               Add new
             </div>
           </div>
@@ -38,4 +47,8 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="chat-toggle">
+  <ion-icon name="chatbubbles-outline"></ion-icon>
 </div>
