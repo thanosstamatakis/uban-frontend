@@ -7,14 +7,14 @@ import { NewTeamModalComponent } from '@ui/new-team-modal/new-team-modal.compone
 @Component({
   selector: 'app-teams',
   templateUrl: './teams.component.html',
-  styleUrls: ['./teams.component.scss']
+  styleUrls: ['./teams.component.scss'],
 })
 export class TeamsComponent implements OnInit {
   userData: Object;
   teams: Object;
 
   constructor(private _team: TeamService, private _auth: AuthService, private _modal: ModalService) {
-    this._auth.userData.subscribe(userData => (this.userData = userData));
+    this._auth.userData.subscribe((userData) => (this.userData = userData));
     this.getTeams();
   }
 
@@ -23,11 +23,13 @@ export class TeamsComponent implements OnInit {
   }
 
   getTeams() {
-    this._team.getAllTeams().subscribe(teams => {
+    this._team.getAllTeams().subscribe((teams) => {
       console.log(teams);
       this.teams = teams;
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.addTeam();
+  }
 }

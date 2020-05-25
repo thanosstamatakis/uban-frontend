@@ -49,6 +49,36 @@
   </div>
 </div>
 
-<div class="chat-toggle">
+<div class="message-container" [@scaleUpDownBr] *ngIf="chatActive">
+  <div class="messages-wrapper">
+    <div class="header">
+      <div class="chat-btn">
+        <ion-icon name="videocam-sharp"></ion-icon>
+      </div>
+      <div class="chat-btn" (click)="toggleChat()">
+        <ion-icon name="close-sharp"></ion-icon>
+      </div>
+    </div>
+    <div class="messages-body">
+      <!-- <div class="typing-message">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div> -->
+      <ng-container *ngFor="let message of messages?.slice().reverse()">
+        <div class="message" [class.me]="message.sender == userId">
+          {{ message.body }}
+        </div>
+      </ng-container>
+    </div>
+    <form class="input-bar" [formGroup]="messageForm" (ngSubmit)="sendMessage(messageForm.value)">
+      <input #messageInput type="text" formControlName="message" placeholder="Type here..." />
+      <button [disabled]="!messageForm.valid" type="submit" class="btn-send">
+        <ion-icon name="send-sharp"></ion-icon>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="chat-toggle" [@scaleUpDown] *ngIf="!chatActive" (click)="toggleChat()">
   <ion-icon name="chatbubbles-outline"></ion-icon>
 </div>

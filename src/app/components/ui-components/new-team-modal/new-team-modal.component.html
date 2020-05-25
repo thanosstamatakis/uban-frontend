@@ -15,6 +15,15 @@
       </div>
 
       <div class="group">
+        <input autocomplete="off" type="text" formControlName="members" id="members" placeholder="team members" />
+        <app-dropdown *ngIf="users">
+          <ul>
+            <li *ngFor="let user of users">{{ user.displayName }}</li>
+          </ul>
+        </app-dropdown>
+      </div>
+
+      <div class="group">
         <textarea
           autocomplete="off"
           rows="5"

@@ -3,12 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '@enviroments/environment';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   constructor(private _http: HttpClient) {
     this.verifyToken();
   }
@@ -18,12 +16,16 @@ export class AuthService {
   public userData = this.user.asObservable();
   private baseUrl = environment.baseUrl;
 
+  public get currentUserValue() {
+    return this.user.value;
+  }
+
   // Use Google oAuth api to sign in
-  public async signInWithGoogle(googleToken:string) {
+  public async signInWithGoogle(googleToken: string) {
     const httpOptions = {
       headers: new HttpHeaders({
-        authorization: googleToken
-      })
+        authorization: googleToken,
+      }),
     };
 
     let googleAuthPromise = this._http.get(`${this.baseUrl}google/auth`, httpOptions).toPromise();
@@ -36,14 +38,10 @@ export class AuthService {
   }
 
   // Use Facebook oAuth api to sign in
-  public signInWithFacebook() {
-
-  }
+  public signInWithFacebook() {}
 
   // Use Github oAuth api to sign in
-  public signInWithGithub() {
-
-  }
+  public signInWithGithub() {}
 
   // Store session jwt
   public storeJWT(token: string) {
@@ -58,8 +56,8 @@ export class AuthService {
   public async verifyToken() {
     const httpOptions = {
       headers: new HttpHeaders({
-        'authorization':  `Bearer ${localStorage.getItem('token')}`,
-      })
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+      }),
     };
     let verificationPromise = this._http.get(`${this.baseUrl}verify-token`, httpOptions).toPromise();
     let verificationData = await Promise.resolve(verificationPromise);
@@ -67,5 +65,4 @@ export class AuthService {
     this.user.next(userData);
     return userData;
   }
-
 }

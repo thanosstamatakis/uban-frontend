@@ -1,18 +1,24 @@
-import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragExit } from '@angular/cdk/drag-drop';
 import { Board } from '@models/board.model';
 import { Column } from '@models/column.model';
+import { User } from '@models/user.model';
 import { SocketioService } from '@services/socketio/socketio.service';
 import { ActivatedRoute } from '@angular/router';
 import { first, take, last, skip } from 'rxjs/operators';
 import { Card } from '@models/card.model';
+import { Message } from '@models/message.model';
+import { scaleUpDownBr, scaleUpDown } from '@helpers/animations';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-boards',
   templateUrl: './boards.component.html',
   styleUrls: ['./boards.component.scss'],
+  animations: [scaleUpDownBr, scaleUpDown],
 })
-export class BoardsComponent implements AfterViewInit {
+export class BoardsComponent implements AfterViewInit, OnInit {
   teamId: any;
   board: Board = new Board('Test Board', '1', [
     new Column('Ideas', '2', [new Card('Show up', '6')]),
@@ -22,23 +28,65 @@ export class BoardsComponent implements AfterViewInit {
   ]);
   teamData: unknown;
   @ViewChildren('columns') boardHTMLElements: QueryList<any>;
+  @ViewChild('messageInput', { static: false }) messageInput: any;
   @ViewChildren('cards') cardContainerHTMLElements: QueryList<any>;
   cardHTMLElements: Array<any> = [];
   teamName: any;
   overContainers: any = [];
+  chatActive = false;
+  userId: string;
+  messageForm: FormGroup;
+  messages: Array<Message> = [
+    {
+      _id: '1',
+      team: '5ec80e492061756272be1daa',
+      sender: '5ebff8f94bc421153a1dd5fd',
+      body: 'Έλα ρε Θάνο, που είσαι',
+      seenBy: ['5ebff8f94bc421153a1dd5fd'],
+    },
+    {
+      _id: '2',
+      team: '5ec80e492061756272be1daa',
+      sender: '5ebff8f94bc421153a1dd5fa',
+      body: 'Τι λέει ρε μαλάκα, πώς πάει?',
+      seenBy: ['5ebff8f94bc421153a1dd5fd'],
+    },
+    {
+      _id: '2',
+      team: '5ec80e492061756272be1daa',
+      sender: '5ebff8f94bc421153a1dd5fd',
+      body: 'Τι σκάτα σου συμβαίνει mate?',
+      seenBy: ['5ebff8f94bc421153a1dd5fd'],
+    },
+  ];
 
-  constructor(private _webSocket: SocketioService, private _route: ActivatedRoute) {
-    console.log(this.board);
+  constructor(
+    private _webSocket: SocketioService,
+    private _route: ActivatedRoute,
+    private _formBuilder: FormBuilder,
+    private _auth: AuthService
+  ) {
+    this.messageForm = _formBuilder.group({
+      message: [null, Validators.required],
+    });
+
     this._route.paramMap.subscribe((params) => {
       this.teamId = params.get('id');
 
       this._webSocket.join(this.teamId);
-      this._webSocket.emit('message', {
-        room: this.teamId,
-        message: 'Hey guys',
-      });
+      // this._webSocket.emit('message', {
+      //   room: this.teamId,
+      //   message: 'Hey guys',
+      // });
       this._webSocket.listen('message').subscribe((message) => {
         console.log(message);
+        this.messages.push(message);
+      });
+
+      this._webSocket.listen('messages').subscribe((messages: Array<Message>) => {
+        console.log(messages);
+        this.messages = messages;
+        console.log(this.messages);
       });
 
       this._webSocket.listen('cardUpdated').subscribe((card) => {
@@ -107,6 +155,12 @@ export class BoardsComponent implements AfterViewInit {
     console.log(this.board);
   }
 
+  async ngOnInit() {
+    let userData: User = await this._auth.verifyToken();
+    this.userId = userData._id;
+    console.log(this.userId);
+  }
+
   ngAfterViewInit() {
     // If a new column is added, focus on the title
     // this.boardHTMLElements.changes.pipe(skip(1)).subscribe((change) => {
@@ -129,6 +183,15 @@ export class BoardsComponent implements AfterViewInit {
       room: this.teamId,
       columnName: 'New Column',
     });
+  }
+
+  sendMessage(message) {
+    this._webSocket.emit('message', {
+      room: this.teamId,
+      sender: this.userId,
+      body: message.message,
+    });
+    this.messageInput.nativeElement.value = '';
   }
 
   addNewTask(columnIndex, columnId) {
@@ -201,6 +264,10 @@ export class BoardsComponent implements AfterViewInit {
       //   console.groupEnd();
       //   console.log(this.board);
     }
+  }
+
+  toggleChat() {
+    this.chatActive = !this.chatActive;
   }
 
   exit(event: CdkDragExit<string[]>, colId) {

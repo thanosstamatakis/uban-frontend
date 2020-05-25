@@ -24,6 +24,8 @@ import { NewTeamModalComponent } from './components/ui-components/new-team-modal
 import { ModalService } from '@services/modal/modal.service';
 import { DomService } from '@services/dom/dom.service';
 import { BuildingTeamComponent } from './components/ui-components/animations/building-team/building-team.component';
+import { ReversePipe } from '@helpers/pipes/reverse.pipe';
+import { DropdownComponent } from './components/ui-components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { BuildingTeamComponent } from './components/ui-components/animations/bui
     AuthSuccessComponent,
     TeamsComponent,
     NewTeamModalComponent,
-    BuildingTeamComponent
+    BuildingTeamComponent,
+    ReversePipe,
+    DropdownComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,11 +48,11 @@ import { BuildingTeamComponent } from './components/ui-components/animations/bui
     ReactiveFormsModule,
     HttpClientModule,
     LottieAnimationViewModule,
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
   ],
   providers: [DomService, ModalService],
   bootstrap: [AppComponent],
   entryComponents: [NewTeamModalComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
