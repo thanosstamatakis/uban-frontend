@@ -23,13 +23,11 @@ export class TeamsComponent implements OnInit {
   }
 
   getTeams() {
-    this._team.getAllTeams().subscribe((teams) => {
+    this._team.getUserTeams().subscribe((teams) => {
       console.log(teams);
       this.teams = teams;
     });
   }
 
-  ngOnInit() {
-    this.addTeam();
-  }
+  ngOnInit() {}
 }

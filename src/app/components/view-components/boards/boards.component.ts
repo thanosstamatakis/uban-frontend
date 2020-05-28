@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragExit } from '@angular/cdk/drag-drop';
 import { Board } from '@models/board.model';
 import { Column } from '@models/column.model';
@@ -16,9 +16,12 @@ import { AuthService } from '@services/auth/auth.service';
   selector: 'app-boards',
   templateUrl: './boards.component.html',
   styleUrls: ['./boards.component.scss'],
+  // Add socketIoService to providers so that Angular is prevented
+  // from creating a singleton for the service
+  providers: [SocketioService],
   animations: [scaleUpDownBr, scaleUpDown],
 })
-export class BoardsComponent implements AfterViewInit, OnInit {
+export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   teamId: any;
   board: Board = new Board('Test Board', '1', [
     new Column('Ideas', '2', [new Card('Show up', '6')]),
@@ -72,6 +75,7 @@ export class BoardsComponent implements AfterViewInit, OnInit {
 
     this._route.paramMap.subscribe((params) => {
       this.teamId = params.get('id');
+      console.log('constructed');
 
       this._webSocket.join(this.teamId);
       // this._webSocket.emit('message', {
@@ -84,7 +88,6 @@ export class BoardsComponent implements AfterViewInit, OnInit {
       });
 
       this._webSocket.listen('messages').subscribe((messages: Array<Message>) => {
-        console.log(messages);
         this.messages = messages;
         console.log(this.messages);
       });
@@ -159,6 +162,11 @@ export class BoardsComponent implements AfterViewInit, OnInit {
     let userData: User = await this._auth.verifyToken();
     this.userId = userData._id;
     console.log(this.userId);
+  }
+
+  ngOnDestroy() {
+    console.log('destroyed');
+    this._webSocket.disconnect();
   }
 
   ngAfterViewInit() {

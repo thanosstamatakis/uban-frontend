@@ -1,1 +1,7 @@
-<ng-content></ng-content>
+<div class="container" [@accordion] *ngIf="options.length">
+  <div class="dropdown">
+    <div class="dropdown-item" (click)="selectedOption(option)" *ngFor="let option of options">
+      {{ option[field] }}
+    </div>
+  </div>
+</div>

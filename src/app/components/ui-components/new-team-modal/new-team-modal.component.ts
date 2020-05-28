@@ -15,6 +15,7 @@ export class NewTeamModalComponent implements OnInit {
   newTeamForm: FormGroup;
   showAnimation = false;
   users = [];
+  members = [];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -30,6 +31,10 @@ export class NewTeamModalComponent implements OnInit {
     });
   }
 
+  get formMembers(): any {
+    return this.newTeamForm.get('members');
+  }
+
   // Closes the modal when X is pressed
   closeModal() {
     this._modal.destroy();
@@ -37,7 +42,13 @@ export class NewTeamModalComponent implements OnInit {
 
   // Calls api to create a new team
   createNewTeam(payload: Object) {
-    console.log(payload);
+    let members = this.members.map((member) => {
+      return member._id;
+    });
+    // Make sure there are no duplicate members
+    let uniqueMembers = new Set(members);
+    members = Array.from(uniqueMembers);
+    payload = { ...payload, members: members };
     this._team.addNewTeam(payload).subscribe((result) => {
       this.showAnimation = true;
       console.log('Add team result:', result);
@@ -48,13 +59,24 @@ export class NewTeamModalComponent implements OnInit {
     });
   }
 
+  optionSelected(option) {
+    console.log(option);
+    this.members.push(option);
+    this.formMembers.reset();
+    this.users = [];
+  }
+
   ngOnInit() {
     this.newTeamForm.controls.members.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(async (searchTerm) => {
-        let result = await this._user.getUserByName(searchTerm);
-        this.users = result['users'];
-        console.log(result['users']);
+        if (searchTerm === '') {
+          this.users = [];
+        } else {
+          let result = await this._user.getUserByName(searchTerm);
+          this.users = result['users'];
+          console.log(result['users']);
+        }
       });
   }
 }

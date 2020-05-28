@@ -16,11 +16,11 @@
 
       <div class="group">
         <input autocomplete="off" type="text" formControlName="members" id="members" placeholder="team members" />
-        <app-dropdown *ngIf="users">
-          <ul>
-            <li *ngFor="let user of users">{{ user.displayName }}</li>
-          </ul>
-        </app-dropdown>
+        <app-dropdown
+          [options]="users"
+          [field]="'displayName'"
+          (onOptionSelected)="optionSelected($event)"
+        ></app-dropdown>
       </div>
 
       <div class="group">
@@ -32,6 +32,20 @@
           id="description"
           placeholder="description"
         ></textarea>
+      </div>
+
+      <div class="members">
+        <ng-container *ngIf="members.length">
+          <h4>Members to invite</h4>
+          <div class="pills">
+            <ng-container *ngFor="let member of members">
+              <div class="pill">
+                <!-- <img [src]="member.profilePicture" alt="" /> -->
+                {{ member.displayName }}
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
       </div>
 
       <button [disabled]="!newTeamForm.valid" type="submit">Add Team</button>

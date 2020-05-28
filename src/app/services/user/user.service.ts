@@ -16,10 +16,11 @@ export class UserService {
       headers: new HttpHeaders({
         authorization: `Bearer ${localStorage.getItem('token')}`,
       }),
+      params: {
+        user: username,
+      },
     };
-    let params = new HttpParams();
-    params.set('user', username);
-    let userPromise = this._http.get(`${this.baseUrl}users/name/`, { params: { user: username } }).toPromise();
+    let userPromise = this._http.get(`${this.baseUrl}users/name/`, httpOptions).toPromise();
     let user = await Promise.resolve(userPromise);
     return user;
   }

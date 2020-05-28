@@ -3,14 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@enviroments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TeamService {
   // Declarations
   private _httpOptions = {
     headers: new HttpHeaders({
-      authorization: `Bearer ${localStorage.getItem('token')}`
-    })
+      authorization: `Bearer ${localStorage.getItem('token')}`,
+    }),
   };
   private _baseUrl = environment.baseUrl;
 
@@ -20,6 +20,11 @@ export class TeamService {
   addNewTeam(payload: Object) {
     return this._http.post(`${this._baseUrl}teams`, payload, this._httpOptions);
   }
+
+  getUserTeams() {
+    return this._http.get(`${this._baseUrl}teams/user`, this._httpOptions);
+  }
+
   //Function that calls the api to get all teams for specific user
   getAllTeams() {
     return this._http.get(`${this._baseUrl}teams/all`, this._httpOptions);

@@ -9,7 +9,7 @@ export const fade = trigger('fade', [
 export const accordion = trigger('accordion', [
   state('void', style({ height: 0 })),
   state('*', style({ height: '*' })),
-  transition('* <=> void', animate('300ms ease-in-out')),
+  transition('* <=> void', animate('200ms ease-in-out')),
 ]);
 
 export const flip = trigger('rotatedState', [
