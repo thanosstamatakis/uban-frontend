@@ -41,7 +41,18 @@ export class AuthService {
   public signInWithFacebook() {}
 
   // Use Github oAuth api to sign in
-  public signInWithGithub() {}
+  public async signInWithGithub(code: string) {
+    const params = {
+      code: code,
+    };
+    let githubAuthPromise = this._http.get(`${this.baseUrl}github/auth`, { params: params }).toPromise();
+    let authData = await Promise.resolve(githubAuthPromise);
+    let userData = authData['userData'];
+    let token = authData['token'];
+    this.user.next(userData);
+    this.storeJWT(token);
+    return userData;
+  }
 
   // Store session jwt
   public storeJWT(token: string) {
@@ -54,15 +65,17 @@ export class AuthService {
   }
 
   public async verifyToken() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        authorization: `Bearer ${localStorage.getItem('token')}`,
-      }),
-    };
-    let verificationPromise = this._http.get(`${this.baseUrl}verify-token`, httpOptions).toPromise();
-    let verificationData = await Promise.resolve(verificationPromise);
-    let userData = verificationData['userData'];
-    this.user.next(userData);
-    return userData;
+    if (localStorage.getItem('token')) {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          authorization: `Bearer ${localStorage.getItem('token')}`,
+        }),
+      };
+      let verificationPromise = this._http.get(`${this.baseUrl}verify-token`, httpOptions).toPromise();
+      let verificationData = await Promise.resolve(verificationPromise);
+      let userData = verificationData['userData'];
+      this.user.next(userData);
+      return userData;
+    }
   }
 }

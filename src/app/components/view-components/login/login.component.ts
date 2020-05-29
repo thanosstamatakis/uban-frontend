@@ -7,7 +7,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   private _authConfig: AuthConfig = {
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
     redirectUri: 'http://localhost:4200/verify/google/',
     clientId: '647941072276-d6m34gl68i8ape6e4u86equevd1h5foc.apps.googleusercontent.com',
     scope: 'openid profile email',
-    strictDiscoveryDocumentValidation: false
+    strictDiscoveryDocumentValidation: false,
   };
   loginForm: FormGroup;
 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     this._oauthService.loadDiscoveryDocumentAndTryLogin();
     this.loginForm = _formBuilder.group({
       email: [null, Validators.required],
-      password: [null, Validators.required]
+      password: [null, Validators.required],
     });
   }
 

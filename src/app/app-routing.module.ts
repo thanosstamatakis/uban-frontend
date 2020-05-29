@@ -8,14 +8,15 @@ import { TeamsComponent } from '@view/teams/teams.component';
 const routes: Routes = [
   { path: '', component: BoardsComponent },
   { path: 'verify/google', component: VerifyComponent },
+  { path: 'verify/github', component: VerifyComponent },
   { path: 'teams', component: TeamsComponent },
   { path: 'teams/:id', component: BoardsComponent },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/login' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
