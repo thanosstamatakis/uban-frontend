@@ -3,19 +3,30 @@
     <div class="title">
       <h1>{{ userData.displayName }} teams</h1>
     </div>
-    <div class="content">
-      <ng-container *ngFor="let team of teams">
-        <div class="team" [routerLink]="[team._id]">
-          <div class="header">
-            {{ team.name }}
-          </div>
-          <div class="description">
-            {{ team.description }}
-          </div>
+    <div class="content-wrapper">
+      <div class="teams-title">
+        <h3>My uBan teams</h3>
+        <div class="btn-import-git" (click)="importGithubTeams()">
+          <img width="20" src="assets/login-page/github-logo-light.png" />
+          Import from Github
         </div>
-      </ng-container>
-      <div (click)="addTeam()" class="team add">
-        <ion-icon name="add-circle"></ion-icon>
+      </div>
+      <hr />
+      <div class="content">
+        <ng-container *ngFor="let team of teams">
+          <div class="team" [class.githubTeam]="team.githubId" [routerLink]="[team._id]">
+            <img *ngIf="team.githubId" src="assets/login-page/github-logo-light.png" alt="" />
+            <div class="header">
+              {{ team.name }}
+            </div>
+            <div class="description">
+              {{ team.description }}
+            </div>
+          </div>
+        </ng-container>
+        <div (click)="addTeam()" class="team add">
+          <ion-icon name="add-circle"></ion-icon>
+        </div>
       </div>
     </div>
   </div>

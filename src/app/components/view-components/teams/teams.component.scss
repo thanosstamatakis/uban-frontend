@@ -2,7 +2,7 @@
   //   background-image: linear-gradient(to right top, #e7f2fb, #c5d6ee, #adb8df, #9f98cc, #9a76b3);
   width: 100%;
   height: 100vh;
-  marign: 0;
+  margin: 0;
   box-sizing: border-box;
   padding: 0;
   padding: 0px 30px;
@@ -21,7 +21,6 @@
       padding: 50px 0px;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
-      //   background: rgba($color: #fff, $alpha: 0.5);
 
       h1 {
         font-size: 50px;
@@ -33,54 +32,118 @@
     }
   }
 
-  .content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    grid-gap: 20px;
-    justify-content: center;
-
-    .team {
-      overflow: hidden;
-      background: rgba($color: #fff, $alpha: 0.5);
-      backdrop-filter: blur(10px);
-      border-radius: 5px;
-      outline: none;
-      padding: 20px;
-      height: 100px;
-      transition: 300ms ease-in-out;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-      &:hover {
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        transform: scale(1.1);
-        cursor: pointer;
+  .content-wrapper {
+    .teams-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h3 {
+        color: #404143;
+        width: max-content;
       }
 
-      &.add {
+      .btn-import-git {
+        img {
+          margin-right: 8px;
+          user-select: none;
+        }
+        user-select: none;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: 300ms ease-in-out;
+        margin-left: auto;
+        margin-top: auto;
+        margin-bottom: auto;
         display: flex;
-        justify-content: center;
         align-items: center;
-        font-size: 80px;
-        color: rgba($color: #9a76b3, $alpha: 0.4);
+        color: #ebebeb;
+        background: #404143;
+        padding: 10px 10px;
+        border-radius: 5px;
+        width: max-content;
 
         &:hover {
-          color: rgba($color: #9a76b3, $alpha: 0.9);
+          cursor: pointer;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
       }
+    }
 
-      .header {
-        font-size: 22px;
-        font-weight: bold;
-        color: #9a76b3;
-        margin-bottom: 15px;
-      }
+    hr {
+      background: rgba($color: #404143, $alpha: 0.1);
+      border: none;
+      height: 1px;
+      margin-bottom: 1rem;
+    }
 
-      .description {
-        height: 60px;
-        color: #404143;
-        font-size: 16px;
+    .content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-gap: 20px;
+      justify-content: center;
+
+      .team {
         overflow: hidden;
-        text-overflow: ellipsis;
+        background: rgba($color: #fff, $alpha: 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: 5px;
+        outline: none;
+        padding: 20px;
+        height: 100px;
+        transition: 300ms ease-in-out;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+        &.githubTeam {
+          background: rgba($color: #404143, $alpha: 0.5);
+          position: relative;
+          img {
+            position: absolute;
+            opacity: 0.3;
+            width: 120px;
+            bottom: 5%;
+            right: 2%;
+          }
+
+          .header {
+            color: #bdccff;
+          }
+
+          .description {
+            color: #ebebeb;
+          }
+        }
+
+        &:hover {
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          transform: scale(1.1);
+          cursor: pointer;
+        }
+
+        &.add {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 80px;
+          color: rgba($color: #9a76b3, $alpha: 0.4);
+
+          &:hover {
+            color: rgba($color: #9a76b3, $alpha: 0.9);
+          }
+        }
+
+        .header {
+          font-size: 22px;
+          font-weight: bold;
+          color: #9a76b3;
+          margin-bottom: 15px;
+        }
+
+        .description {
+          height: 60px;
+          color: #404143;
+          font-size: 16px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
