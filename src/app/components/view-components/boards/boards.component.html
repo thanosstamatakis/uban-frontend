@@ -3,7 +3,14 @@
     <div class="navbar-brand">
       <div class="navbar-item">
         <div class="app-name has-gradient-text">
-          uBan <input *ngIf="teamName" type="text" class="board-name" placeholder="{{ teamName }}" />
+          uBan
+          <input
+            [disabled]="this.board.githubId ? true : false"
+            *ngIf="teamName"
+            type="text"
+            class="board-name"
+            placeholder="{{ teamName }}"
+          />
         </div>
       </div>
     </div>
@@ -15,7 +22,7 @@
         <div #columns class="board-column" *ngFor="let column of board.columns; let columnIndex = index">
           <div class="column-title">
             <input
-              (keyup)="updateColumnName($event.target.value, column._id)"
+              (change)="updateColumnName($event.target.value, column._id, column.githubId)"
               type="text"
               placeholder="{{ column.name }}"
             />
@@ -26,17 +33,17 @@
             class="tasks-container"
             cdkDropList
             [cdkDropListData]="column.cards"
-            (cdkDropListDropped)="drop($event, column._id)"
-            (cdkDropListExited)="exit($event, column._id)"
+            (cdkDropListDropped)="drop($event, column._id, column.githubId)"
+            (cdkDropListExited)="exit($event, column._id, column.githubId)"
           >
             <div class="task" *ngFor="let item of column.cards" cdkDrag>
               <input
-                (keyup)="updateCardName($event.target.value, item._id, column._id)"
+                (change)="updateCardName($event.target.value, item._id, column._id, item.githubId)"
                 type="text"
                 placeholder="{{ item.name }}"
               />
             </div>
-            <div class="add-new" (click)="addNewTask(columnIndex, column._id)">
+            <div class="add-new" (click)="addNewTask(columnIndex, column._id, column.githubId)">
               Add new
             </div>
           </div>

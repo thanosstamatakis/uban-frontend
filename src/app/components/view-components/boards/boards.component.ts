@@ -75,7 +75,7 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this._route.paramMap.subscribe((params) => {
       this.teamId = params.get('id');
-      console.log('constructed');
+      // console.log('constructed');
 
       this._webSocket.join(this.teamId);
       // this._webSocket.emit('message', {
@@ -89,7 +89,7 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
 
       this._webSocket.listen('messages').subscribe((messages: Array<Message>) => {
         this.messages = messages;
-        console.log(this.messages);
+        // console.log(this.messages);
       });
 
       this._webSocket.listen('cardUpdated').subscribe((card) => {
@@ -136,7 +136,7 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
       });
 
       this._webSocket.listen('board').subscribe((team) => {
-        console.log(team);
+        // console.log(team);
         this.teamName = team.name;
         let board: Board = team.board;
         let columns: Column[] = board.columns;
@@ -148,14 +148,18 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
               new Column(
                 column.name,
                 column._id,
-                column.cards.map((card: Card) => new Card(card.name, card._id))
+                column.cards.map(
+                  (card: Card) => new Card(card.name, card._id, card.githubId, card.githubProject, card.githubColumn)
+                ),
+                column.githubId,
+                column.githubProject
               )
-          )
+          ),
+          board.githubId
         );
+        console.log('Board successfully created:', this.board);
       });
     });
-
-    console.log(this.board);
   }
 
   async ngOnInit() {
@@ -190,6 +194,9 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
     this._webSocket.emit('addColumn', {
       room: this.teamId,
       columnName: 'New Column',
+      git: this.board.githubId ? true : false,
+      gitProject: this.board.githubId,
+      userId: this.userId,
     });
   }
 
@@ -202,66 +209,96 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
     this.messageInput.nativeElement.value = '';
   }
 
-  addNewTask(columnIndex, columnId) {
+  addNewTask(columnIndex, columnId, githubColumnId) {
     console.log(columnId);
     this._webSocket.emit('addCard', {
       room: this.teamId,
       columnId: columnId,
+      git: this.board.githubId ? true : false,
+      githubColumnId: githubColumnId,
+      gitProject: this.board.githubId,
+      userId: this.userId,
     });
     // this.board.columns[columnIndex].cards.push(new Card('New Card', '2'));
-    this.cardContainerHTMLElements.changes.pipe(take(1)).subscribe((change) => {
-      this.cardHTMLElements = change._results.map((result) =>
-        Array.prototype.slice.call(result.nativeElement.children, 0, result.nativeElement.children.length - 1)
-      );
-      let columnElements = this.cardHTMLElements[columnIndex];
-      let lastCardElement = columnElements[columnElements.length - 1];
-      lastCardElement.children[0].focus();
-    });
+    // this.cardContainerHTMLElements.changes.pipe(take(1)).subscribe((change) => {
+    //   this.cardHTMLElements = change._results.map((result) =>
+    //     Array.prototype.slice.call(result.nativeElement.children, 0, result.nativeElement.children.length - 1)
+    //   );
+    //   let columnElements = this.cardHTMLElements[columnIndex];
+    //   let lastCardElement = columnElements[columnElements.length - 1];
+    //   lastCardElement.children[0].focus();
+    // });
   }
 
-  updateColumnName(value: string, id: string) {
+  updateColumnName(value: string, id: string, githubId: string) {
     console.log(`Changed column ${id}: ${value}`);
     this._webSocket.emit('changeColumnName', {
       room: this.teamId,
       columnId: id,
       name: value,
+      git: this.board.githubId ? true : false,
+      githubId: githubId,
+      userId: this.userId,
     });
   }
 
-  updateCardName(value: string, id: string, columnId: string) {
+  updateCardName(value: string, id: string, columnId: string, githubId: string) {
     console.log(`Changed card ${id}: ${value}`);
     this._webSocket.emit('changeCardName', {
       room: this.teamId,
       cardId: id,
       columnId: columnId,
       name: value,
+      git: this.board.githubId ? true : false,
+      githubId: githubId,
+      userId: this.userId,
     });
   }
 
   // Handle drag and drop events from the Angular CDK
-  drop(event: CdkDragDrop<string[]>, colId) {
+  drop(event: CdkDragDrop<string[]>, colId, githubColumnId) {
     console.log(event);
     if (event.previousContainer === event.container) {
       this.overContainers = [];
+      console.log(event.currentIndex);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      let position;
+      event.currentIndex == 0
+        ? (position = 'top')
+        : (position = `after:${event.container.data[event.currentIndex - 1]['githubId']}`);
+      console.log(position);
       this._webSocket.emit('changeCardIndex', {
         room: this.teamId,
         cardId: event.container.data[event.currentIndex]['_id'],
         columnId: colId,
         oldIndex: event.previousIndex,
         newIndex: event.currentIndex,
+        position: position,
+        git: this.board.githubId ? true : false,
+        githubId: event.container.data[event.currentIndex]['githubId'],
+        userId: this.userId,
       });
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-      console.log(event.previousContainer.data);
-      console.log(this.overContainers[0]);
+      // console.log(event.previousContainer.data);
+      // console.log(this.overContainers[0]);
+      let position;
+      event.currentIndex == 0
+        ? (position = 'top')
+        : (position = `after:${event.container.data[event.currentIndex - 1]['githubId']}`);
+      console.log(position);
       this._webSocket.emit('transferCard', {
         room: this.teamId,
         cardId: event.container.data[event.currentIndex]['_id'],
         columnId: colId,
-        prevColId: this.overContainers[0],
+        prevColId: this.overContainers[0].colId,
         oldIndex: event.previousIndex,
         newIndex: event.currentIndex,
+        githubColumn: githubColumnId,
+        git: this.board.githubId ? true : false,
+        githubId: event.container.data[event.currentIndex]['githubId'],
+        position: position,
+        userId: this.userId,
       });
       this.overContainers = [];
       //   console.group('Change container event');
@@ -278,9 +315,9 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
     this.chatActive = !this.chatActive;
   }
 
-  exit(event: CdkDragExit<string[]>, colId) {
-    console.log(`Left from col ${colId}`);
-    this.overContainers.push(colId);
+  exit(event: CdkDragExit<string[]>, colId, githubColumnId) {
+    console.log('Left from col:', { colId, githubColumnId });
+    this.overContainers.push({ colId, githubColumnId });
     // event.container.exited.subscribe((e) => console.log(e));
     // this._webSocket.emit('removeCardFromColumn', {
     //   room: this.teamId,
