@@ -1,37 +1,91 @@
 <div class="root">
-    <div class="navbar has-background-dark">
-      <div class="navbar-brand">
-        <div class="navbar-item">
-          <h1 class="app-name has-gradient-text">uBan <span class="board-name">{{ board.name }}</span></h1>
+  <div class="navbar has-background-dark">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <div class="app-name has-gradient-text">
+          uBan
+          <input
+            [disabled]="this.board.githubId ? true : false"
+            *ngIf="teamName"
+            type="text"
+            class="board-name"
+            placeholder="{{ teamName }}"
+          />
         </div>
       </div>
     </div>
-  
-    <div class="board">
+  </div>
 
-      <div class="board-wrapper">
-  
-        <div class="board-columns" cdkDropListGroup>
-          <div class="board-column" *ngFor="let column of board.columns">
-  
-            <div class="column-title">
-              {{ column.name }}
-            </div>
-  
-            <div class="tasks-container"
+  <div class="board">
+    <div class="board-wrapper">
+      <div class="board-columns" cdkDropListGroup>
+        <div #columns class="board-column" *ngFor="let column of board.columns; let columnIndex = index">
+          <div class="column-title">
+            <input
+              (change)="updateColumnName($event.target.value, column._id, column.githubId)"
+              type="text"
+              placeholder="{{ column.name }}"
+            />
+          </div>
+
+          <div
+            #cards
+            class="tasks-container"
             cdkDropList
-            [cdkDropListData]="column.tasks"
-            (cdkDropListDropped)="drop($event)">
-              <div class="task" *ngFor="let item of column.tasks" cdkDrag>
-                {{ item }}
-              </div>
+            [cdkDropListData]="column.cards"
+            (cdkDropListDropped)="drop($event, column._id, column.githubId)"
+            (cdkDropListExited)="exit($event, column._id, column.githubId)"
+          >
+            <div class="task" *ngFor="let item of column.cards" cdkDrag>
+              <input
+                (change)="updateCardName($event.target.value, item._id, column._id, item.githubId)"
+                type="text"
+                placeholder="{{ item.name }}"
+              />
+            </div>
+            <div class="add-new" (click)="addNewTask(columnIndex, column._id, column.githubId)">
+              Add new
             </div>
           </div>
-  
         </div>
-  
+        <div class="board-column add" (click)="addNewColumn()">
+          <ion-icon name="add-circle"></ion-icon>
+        </div>
       </div>
-  
     </div>
-  
   </div>
+</div>
+
+<div class="message-container" [@scaleUpDownBr] *ngIf="chatActive">
+  <div class="messages-wrapper">
+    <div class="header">
+      <div class="chat-btn">
+        <ion-icon name="videocam-sharp"></ion-icon>
+      </div>
+      <div class="chat-btn" (click)="toggleChat()">
+        <ion-icon name="close-sharp"></ion-icon>
+      </div>
+    </div>
+    <div class="messages-body">
+      <!-- <div class="typing-message">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div> -->
+      <ng-container *ngFor="let message of messages?.slice().reverse()">
+        <div class="message" [class.me]="message.sender == userId">
+          {{ message.body }}
+        </div>
+      </ng-container>
+    </div>
+    <form class="input-bar" [formGroup]="messageForm" (ngSubmit)="sendMessage(messageForm.value)">
+      <input #messageInput type="text" formControlName="message" placeholder="Type here..." />
+      <button [disabled]="!messageForm.valid" type="submit" class="btn-send">
+        <ion-icon name="send-sharp"></ion-icon>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="chat-toggle" [@scaleUpDown] *ngIf="!chatActive" (click)="toggleChat()">
+  <ion-icon name="chatbubbles-outline"></ion-icon>
+</div>

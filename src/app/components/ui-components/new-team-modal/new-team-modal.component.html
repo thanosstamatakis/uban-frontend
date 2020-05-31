@@ -1,0 +1,57 @@
+<div class="wrapper">
+  <ion-icon (click)="closeModal()" name="close"></ion-icon>
+  <div class="title">
+    <ng-container *ngIf="!showAnimation">
+      Add new team
+    </ng-container>
+    <ng-container *ngIf="showAnimation">
+      Building your team boards
+    </ng-container>
+  </div>
+  <div class="content">
+    <form *ngIf="!showAnimation" class="form" [formGroup]="newTeamForm" (ngSubmit)="createNewTeam(newTeamForm.value)">
+      <div class="group">
+        <input autocomplete="off" type="text" formControlName="name" id="name" placeholder="team name" />
+      </div>
+
+      <div class="group">
+        <input autocomplete="off" type="text" formControlName="members" id="members" placeholder="team members" />
+        <app-dropdown
+          [options]="users"
+          [field]="'displayName'"
+          (onOptionSelected)="optionSelected($event)"
+        ></app-dropdown>
+      </div>
+
+      <div class="group">
+        <textarea
+          autocomplete="off"
+          rows="5"
+          formControlName="description"
+          maxlength="100"
+          id="description"
+          placeholder="description"
+        ></textarea>
+      </div>
+
+      <div class="members">
+        <ng-container *ngIf="members.length">
+          <h4>Members to invite</h4>
+          <div class="pills">
+            <ng-container *ngFor="let member of members">
+              <div class="pill">
+                <!-- <img [src]="member.profilePicture" alt="" /> -->
+                {{ member.displayName }}
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+
+      <button [disabled]="!newTeamForm.valid" type="submit">Add Team</button>
+    </form>
+    <ng-container *ngIf="showAnimation">
+      <animation-building-team></animation-building-team>
+    </ng-container>
+  </div>
+</div>

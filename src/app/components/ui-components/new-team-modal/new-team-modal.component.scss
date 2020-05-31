@@ -1,0 +1,121 @@
+.wrapper {
+  padding: 40px;
+  position: relative;
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+
+    .pill {
+      background: #e5f0ff;
+      width: max-content;
+      margin: 5px;
+      font-size: 12px;
+      padding: 5px 15px;
+      border-radius: 2rem;
+      color: #4a586e;
+    }
+  }
+
+  .members {
+    h4 {
+      margin-bottom: 10px;
+    }
+    margin-bottom: 20px;
+  }
+
+  ion-icon {
+    position: absolute;
+    right: 20px;
+    font-size: 22px;
+    color: rgba($color: #404143, $alpha: 0.6);
+    top: 20px;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+      color: rgba($color: #ff756b, $alpha: 0.7);
+      cursor: pointer;
+    }
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #404143;
+    margin-bottom: 30px;
+  }
+
+  .content {
+    form {
+      .group {
+        position: relative;
+        margin-bottom: 20px;
+
+        input,
+        textarea {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 5px 20px;
+          outline: none;
+          border-radius: 5px;
+          font-family: 'Cera';
+          border: none;
+          border: 1px solid #939598;
+          min-width: 280px;
+          height: calc(2.40875rem + 2px);
+          padding: 0.57rem 1rem;
+          font-size: 0.875rem;
+          line-height: 1.45;
+          transition: 300ms ease-in-out;
+          background: transparent;
+
+          &:active,
+          &:focus {
+            border-color: #231f20;
+            ~ label {
+              color: #231f20;
+            }
+          }
+
+          &::placeholder {
+            font-family: 'Cera';
+            text-transform: uppercase;
+            letter-spacing: 2px;
+          }
+        }
+
+        textarea {
+          height: unset;
+        }
+      }
+
+      button {
+        font-family: 'Cera';
+        outline: none !important;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        width: 100%;
+        padding: 10px 15px;
+        border-radius: 5px;
+        background: #9a76b3;
+        color: white;
+        border: none;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: 300ms ease-in-out;
+
+        &:hover {
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          cursor: pointer;
+        }
+
+        &:disabled {
+          opacity: 50%;
+        }
+      }
+
+      margin-bottom: 30px;
+    }
+  }
+}

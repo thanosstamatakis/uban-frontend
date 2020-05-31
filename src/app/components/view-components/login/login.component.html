@@ -1,0 +1,39 @@
+<div class="login-wrapper">
+  <img src="assets/login-page/uBan-asset.svg" alt="" />
+  <div class="logo">uBan</div>
+  <div class="card">
+    <div class="title">
+      Login to uBan
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="loginWithUban(loginForm.value)">
+      <div class="group">
+        <input type="text" formControlName="email" id="email" placeholder="e-mail" />
+      </div>
+
+      <div class="group">
+        <input type="password" formControlName="password" id="password" placeholder="password" />
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <hr />
+
+    <div class="btn social">
+      <img src="assets/login-page/google-logo-light.svg" width="25" alt="" />
+      <div (click)="initLogin()" class="google">
+        Login with Google
+      </div>
+    </div>
+
+    <a href="https://github.com/login/oauth/authorize?client_id=8b46926d19faa67ad555&scope=user%20public_repo">
+      <div class="btn social">
+        <img src="assets/login-page/github-logo-light.png" width="25" alt="" />
+        <div class="github">
+          Login with Github
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
