@@ -163,9 +163,8 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    let userData: User = await this._auth.verifyToken();
+    let userData: User = (await this._auth.verifyToken())['userData'];
     this.userId = userData._id;
-    console.log(this.userId);
   }
 
   ngOnDestroy() {

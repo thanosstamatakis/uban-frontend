@@ -75,7 +75,10 @@ export class AuthService {
       let verificationData = await Promise.resolve(verificationPromise);
       let userData = verificationData['userData'];
       this.user.next(userData);
-      return userData;
+      return verificationData;
     }
+    // If there is no token user is definatelly not valid
+    this.user.next(null);
+    return { valid: false };
   }
 }

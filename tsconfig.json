@@ -11,19 +11,15 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"],
     "paths": {
       "@services/*": ["src/app/services/*"],
       "@ui/*": ["src/app/components/ui-components/*"],
       "@view/*": ["src/app/components/view-components/*"],
       "@models/*": ["src/app/models/*"],
       "@helpers/*": ["helpers/*"],
+      "@guards/*": ["src/app/guards/*"],
       "@enviroments/*": ["src/environments/*"]
     }
   },
