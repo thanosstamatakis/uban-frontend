@@ -5,14 +5,15 @@ import { LoginComponent } from '@view/login/login.component';
 import { VerifyComponent } from '@view/verify/verify.component';
 import { TeamsComponent } from '@view/teams/teams.component';
 import { AuthGuard } from '@guards/auth/auth.guard';
+import { LoginGuard } from '@guards/login/login.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/teams', pathMatch: 'full' },
-  { path: 'verify/google', component: VerifyComponent },
-  { path: 'verify/github', component: VerifyComponent },
+  { path: 'verify/google', component: VerifyComponent, canActivate: [LoginGuard] },
+  { path: 'verify/github', component: VerifyComponent, canActivate: [LoginGuard] },
   { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
   { path: 'teams/:id', component: BoardsComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', redirectTo: '/login' },
 ];
 
