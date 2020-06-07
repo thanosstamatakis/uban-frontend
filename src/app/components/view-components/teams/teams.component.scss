@@ -21,6 +21,40 @@
       padding: 50px 0px;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      .buttons {
+        display: flex;
+        .btn {
+          color: #404143;
+          background: white;
+          width: max-content;
+          width: 45px;
+          height: 45px;
+          font-size: 22px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          transition: 300ms ease-in-out;
+          &.logout {
+            color: white;
+            background: #bdccff;
+            &:hover {
+              background: #ff756b;
+            }
+          }
+          &:hover {
+            background: #9a76b3;
+            color: white;
+            cursor: pointer;
+          }
+          &:not(:last-child) {
+            margin-right: 10px;
+          }
+        }
+      }
 
       h1 {
         font-size: 50px;

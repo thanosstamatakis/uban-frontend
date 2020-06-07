@@ -1,0 +1,38 @@
+<div class="container">
+  <!-- <h1>Something</h1>
+  {{ userId }} -->
+  <ng-container *ngIf="!loading">
+    <img [src]="user.profilePicture" alt="" />
+    <h2>{{ user.displayName }}</h2>
+    <small>{{ teams }} {{ teams == 1 ? 'team' : 'teams' }}</small>
+    <div class="group first">
+      <input
+        type="text"
+        (change)="changeValue({ displayName: $event.target.value })"
+        placeholder="{{ user.displayName }}"
+      />
+      <label>Display Name</label>
+    </div>
+    <div class="group">
+      <input
+        [disabled]="user.roleName == 'github' || 'facebook' || 'google'"
+        type="text"
+        (change)="changeValue({ email: $event.target.value })"
+        placeholder="{{ user.email }}"
+      />
+      <label>email</label>
+    </div>
+    <div class="provider" [class.google]="user.roleName == 'google'" *ngIf="user.roleName == 'google'">
+      <img src="assets/login-page/google-logo-light.svg" alt="" />Verified by Google
+    </div>
+    <div class="provider" [class.facebook]="user.roleName == 'facebook'" *ngIf="user.roleName == 'facebook'">
+      <img src="assets/login-page/facebook-logo-dark.svg" alt="" />Verified by Facebook
+    </div>
+    <div class="provider" [class.git]="user.roleName == 'github'" *ngIf="user.roleName == 'github'">
+      <img src="assets/login-page/github-logo-light.png" alt="" />Verified by Github
+    </div>
+  </ng-container>
+  <ng-container *ngIf="loading">
+    <app-loading></app-loading>
+  </ng-container>
+</div>

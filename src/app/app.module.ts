@@ -13,19 +13,21 @@ import { LottieAnimationViewModule } from 'ng-lottie';
 
 // Components
 import { AppComponent } from './app.component';
-import { BoardsComponent } from './components/view-components/boards/boards.component';
-import { LoginComponent } from './components/view-components/login/login.component';
-import { VerifyComponent } from './components/view-components/verify/verify.component';
-import { AuthSuccessComponent } from './components/ui-components/animations/auth-success/auth-success.component';
-import { TeamsComponent } from './components/view-components/teams/teams.component';
-import { NewTeamModalComponent } from './components/ui-components/new-team-modal/new-team-modal.component';
+import { BoardsComponent } from '@view/boards/boards.component';
+import { LoginComponent } from '@view/login/login.component';
+import { VerifyComponent } from '@view/verify/verify.component';
+import { AuthSuccessComponent } from '@ui/animations/auth-success/auth-success.component';
+import { TeamsComponent } from '@view/teams/teams.component';
+import { NewTeamModalComponent } from '@ui/new-team-modal/new-team-modal.component';
 
 // Services
 import { ModalService } from '@services/modal/modal.service';
 import { DomService } from '@services/dom/dom.service';
-import { BuildingTeamComponent } from './components/ui-components/animations/building-team/building-team.component';
+import { BuildingTeamComponent } from '@ui/animations/building-team/building-team.component';
 import { ReversePipe } from '@helpers/pipes/reverse.pipe';
-import { DropdownComponent } from './components/ui-components/dropdown/dropdown.component';
+import { DropdownComponent } from '@ui/dropdown/dropdown.component';
+import { UserSettingsComponent } from '@ui/user-settings/user-settings.component';
+import { LoadingComponent } from './components/ui-components/animations/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { DropdownComponent } from './components/ui-components/dropdown/dropdown.
     BuildingTeamComponent,
     ReversePipe,
     DropdownComponent,
+    UserSettingsComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,7 @@ import { DropdownComponent } from './components/ui-components/dropdown/dropdown.
   ],
   providers: [DomService, ModalService],
   bootstrap: [AppComponent],
-  entryComponents: [NewTeamModalComponent],
+  entryComponents: [NewTeamModalComponent, UserSettingsComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

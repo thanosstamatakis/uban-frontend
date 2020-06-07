@@ -2,11 +2,22 @@
   <div class="container" *ngIf="userData">
     <div class="title">
       <h1>{{ userData.displayName }} teams</h1>
+      <div class="buttons">
+        <div class="btn">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+        <div class="btn" (click)="toggleSettings()">
+          <ion-icon name="settings-outline"></ion-icon>
+        </div>
+        <div class="btn logout" (click)="logoutUser()">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </div>
+      </div>
     </div>
     <div class="content-wrapper">
       <div class="teams-title">
         <h3>My uBan teams</h3>
-        <div class="btn-import-git" (click)="importGithubTeams()">
+        <div class="btn-import-git" *ngIf="userData?.roleName !== 'github'" (click)="importGithubTeams()">
           <img width="20" src="assets/login-page/github-logo-light.png" />
           Import from Github
         </div>
