@@ -7,6 +7,7 @@ import { GithubService } from '@services/github/github.service';
 import { UserSettingsComponent } from '@ui/user-settings/user-settings.component';
 import { User } from '@models/user.model';
 import { Router } from '@angular/router';
+import { MessageService } from '@services/message/message.service';
 
 @Component({
   selector: 'app-teams',
@@ -16,22 +17,39 @@ import { Router } from '@angular/router';
 export class TeamsComponent implements OnInit {
   userData: User;
   teams: Object;
-
+  unreadMessages = [];
+  showUnread = false;
   constructor(
     private _team: TeamService,
     private _auth: AuthService,
     private _modal: ModalService,
     private _git: GithubService,
+    private _messages: MessageService,
     private _router: Router
   ) {
     this._auth.userData.subscribe((userData: User) => {
       this.userData = userData;
+      this._messages.getUnreadMessages(this.userData._id).subscribe((unreadMessages: Array<Object>) => {
+        let mappedTeams = unreadMessages.map((team) => {
+          return team['team'][0];
+        });
+        this.unreadMessages = mappedTeams;
+      });
     });
     this.getTeams();
   }
 
   addTeam() {
     this._modal.init(NewTeamModalComponent, {}, {});
+  }
+
+  optionSelected(option) {
+    console.log(option);
+    this._router.navigate(['/teams', option._id]);
+  }
+
+  toggleMessages() {
+    this.showUnread = !this.showUnread;
   }
 
   importGithubTeams() {

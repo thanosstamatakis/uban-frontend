@@ -25,6 +25,14 @@
       justify-content: space-between;
       .buttons {
         display: flex;
+        position: relative;
+
+        app-dropdown {
+          position: absolute;
+          top: 70px;
+          right: 0;
+          width: 260px;
+        }
         .btn {
           color: #404143;
           background: white;
@@ -38,6 +46,23 @@
           border-radius: 50%;
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
           transition: 300ms ease-in-out;
+          position: relative;
+
+          &.unread {
+            &::after {
+              position: absolute;
+              top: 0;
+              right: 0;
+              content: '';
+              background: rgb(255, 117, 107);
+              width: 15px;
+              height: 15px;
+              border-radius: 50%;
+              box-shadow: 0 20px 25px -5px rgba(255, 117, 107, 0.8), 0 10px 10px -5px rgba(255, 117, 107, 1);
+              border: 2px solid white;
+            }
+          }
+
           &.logout {
             color: white;
             background: #bdccff;

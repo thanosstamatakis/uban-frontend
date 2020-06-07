@@ -3,7 +3,7 @@
     <div class="title">
       <h1>{{ userData.displayName }} teams</h1>
       <div class="buttons">
-        <div class="btn">
+        <div class="btn" (click)="toggleMessages()" [class.unread]="unreadMessages">
           <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
         </div>
         <div class="btn" (click)="toggleSettings()">
@@ -12,6 +12,12 @@
         <div class="btn logout" (click)="logoutUser()">
           <ion-icon name="log-out-outline"></ion-icon>
         </div>
+        <app-dropdown
+          *ngIf="showUnread"
+          [options]="unreadMessages"
+          [field]="'name'"
+          (onOptionSelected)="optionSelected($event)"
+        ></app-dropdown>
       </div>
     </div>
     <div class="content-wrapper">

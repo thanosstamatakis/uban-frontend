@@ -7,10 +7,10 @@
   background: white;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  padding: 10px 0px;
+  padding: 0px 0px;
   & {
     scrollbar-width: thin;
-    scrollbar-color: blue orange;
+    scrollbar-color: #fff #fff;
   }
 
   /* Works on Chrome/Edge/Safari */

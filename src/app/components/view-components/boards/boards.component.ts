@@ -23,12 +23,13 @@ import { AuthService } from '@services/auth/auth.service';
 })
 export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   teamId: any;
-  board: Board = new Board('Test Board', '1', [
-    new Column('Ideas', '2', [new Card('Show up', '6')]),
-    new Column('Research', '3', [new Card('Skrrrrap pap', '7')]),
-    new Column('Todo', '4', [new Card('Get paid', '8')]),
-    new Column('Done', '5', [new Card("That's whats up", '9')]),
-  ]);
+  board: Board;
+  // = new Board('Test Board', '1', [
+  //   new Column('Ideas', '2', [new Card('Show up', '6')]),
+  //   new Column('Research', '3', [new Card('Skrrrrap pap', '7')]),
+  //   new Column('Todo', '4', [new Card('Get paid', '8')]),
+  //   new Column('Done', '5', [new Card("That's whats up", '9')]),
+  // ]);
   teamData: unknown;
   @ViewChildren('columns') boardHTMLElements: QueryList<any>;
   @ViewChild('messageInput', { static: false }) messageInput: any;
@@ -37,30 +38,32 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   teamName: any;
   overContainers: any = [];
   chatActive = false;
+  unreadMessages = 0;
   userId: string;
   messageForm: FormGroup;
+  audio = new Audio('assets/sounds/message.mp3');
   messages: Array<Message> = [
-    {
-      _id: '1',
-      team: '5ec80e492061756272be1daa',
-      sender: '5ebff8f94bc421153a1dd5fd',
-      body: 'Έλα ρε Θάνο, που είσαι',
-      seenBy: ['5ebff8f94bc421153a1dd5fd'],
-    },
-    {
-      _id: '2',
-      team: '5ec80e492061756272be1daa',
-      sender: '5ebff8f94bc421153a1dd5fa',
-      body: 'Τι λέει ρε μαλάκα, πώς πάει?',
-      seenBy: ['5ebff8f94bc421153a1dd5fd'],
-    },
-    {
-      _id: '2',
-      team: '5ec80e492061756272be1daa',
-      sender: '5ebff8f94bc421153a1dd5fd',
-      body: 'Τι σκάτα σου συμβαίνει mate?',
-      seenBy: ['5ebff8f94bc421153a1dd5fd'],
-    },
+    // {
+    //   _id: '1',
+    //   team: '5ec80e492061756272be1daa',
+    //   sender: '5ebff8f94bc421153a1dd5fd',
+    //   body: 'Έλα ρε Θάνο, που είσαι',
+    //   seenBy: ['5ebff8f94bc421153a1dd5fd'],
+    // },
+    // {
+    //   _id: '2',
+    //   team: '5ec80e492061756272be1daa',
+    //   sender: '5ebff8f94bc421153a1dd5fa',
+    //   body: 'Τι λέει ρε μαλάκα, πώς πάει?',
+    //   seenBy: ['5ebff8f94bc421153a1dd5fd'],
+    // },
+    // {
+    //   _id: '2',
+    //   team: '5ec80e492061756272be1daa',
+    //   sender: '5ebff8f94bc421153a1dd5fd',
+    //   body: 'Τι σκάτα σου συμβαίνει mate?',
+    //   seenBy: ['5ebff8f94bc421153a1dd5fd'],
+    // },
   ];
 
   constructor(
@@ -69,13 +72,13 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private _auth: AuthService
   ) {
+    this.audio.load();
     this.messageForm = _formBuilder.group({
       message: [null, Validators.required],
     });
 
     this._route.paramMap.subscribe((params) => {
       this.teamId = params.get('id');
-      // console.log('constructed');
 
       this._webSocket.join(this.teamId);
       // this._webSocket.emit('message', {
@@ -83,17 +86,20 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
       //   message: 'Hey guys',
       // });
       this._webSocket.listen('message').subscribe((message) => {
-        console.log(message);
         this.messages.push(message);
+        message.sender !== this.userId ? this.audio.play() : this.userId;
+        let unreadIds = this.calculateUnread();
+        this.unreadMessages = unreadIds.length;
       });
 
       this._webSocket.listen('messages').subscribe((messages: Array<Message>) => {
         this.messages = messages;
-        // console.log(this.messages);
+        console.log(this.messages);
+        let unreadIds = this.calculateUnread();
+        this.unreadMessages = unreadIds.length;
       });
 
       this._webSocket.listen('cardUpdated').subscribe((card) => {
-        console.log('New card:', card);
         this.board.columns.forEach((col, index) =>
           col._id === card.columnId
             ? this.board.columns[index].cards.map((crd) => (crd._id === card._id ? (crd.name = card.name) : crd))
@@ -102,10 +108,8 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
       });
 
       this._webSocket.listen('columnUpdated').subscribe((column) => {
-        console.log('New column:', column);
         this.board.columns.forEach((col, index) => {
           if (col._id == column._id) {
-            console.log(col._id);
             this.board.columns[index].name = column.name;
           }
         });
@@ -118,15 +122,10 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
       });
 
       this._webSocket.listen('cardPositionChanged').subscribe(({ columnId, prevColId, oldIndex, newIndex }) => {
-        console.log('_____Listened to this_____');
         let columnIndex;
         let prevColumnIndex;
         this.board.columns.forEach((col, i) => (col._id === prevColId ? (prevColumnIndex = i) : col));
         this.board.columns.forEach((col, i) => (col._id === columnId ? (columnIndex = i) : col));
-        console.log('Cards: ', this.board.columns[columnIndex].cards);
-        console.log('Cards: ', this.board.columns[prevColumnIndex].cards);
-        console.log('Old index: ', oldIndex);
-        console.log('New index: ', newIndex);
         transferArrayItem(
           this.board.columns[prevColumnIndex].cards,
           this.board.columns[columnIndex].cards,
@@ -136,7 +135,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
       });
 
       this._webSocket.listen('board').subscribe((team) => {
-        // console.log(team);
         this.teamName = team.name;
         let board: Board = team.board;
         let columns: Column[] = board.columns;
@@ -157,7 +155,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
           ),
           board.githubId
         );
-        console.log('Board successfully created:', this.board);
       });
     });
   }
@@ -168,7 +165,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('destroyed');
     this._webSocket.disconnect();
   }
 
@@ -199,6 +195,27 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
     });
   }
 
+  focusedMessage() {
+    let unreadIds = this.calculateUnread();
+    if (unreadIds.length > 0) {
+      this._webSocket.emit('updateMessageViews', {
+        room: this.teamId,
+        userId: this.userId,
+        messages: unreadIds,
+      });
+    }
+  }
+
+  calculateUnread() {
+    let unseenIds = [];
+    for (let i = 0; i < this.messages.length; i++) {
+      const msg = this.messages[i];
+      let unseen = !msg.seenBy.includes(this.userId);
+      unseen ? unseenIds.push(msg._id) : unseen;
+    }
+    return unseenIds;
+  }
+
   sendMessage(message) {
     this._webSocket.emit('message', {
       room: this.teamId,
@@ -209,7 +226,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   addNewTask(columnIndex, columnId, githubColumnId) {
-    console.log(columnId);
     this._webSocket.emit('addCard', {
       room: this.teamId,
       columnId: columnId,
@@ -230,7 +246,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   updateColumnName(value: string, id: string, githubId: string) {
-    console.log(`Changed column ${id}: ${value}`);
     this._webSocket.emit('changeColumnName', {
       room: this.teamId,
       columnId: id,
@@ -242,7 +257,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   updateCardName(value: string, id: string, columnId: string, githubId: string) {
-    console.log(`Changed card ${id}: ${value}`);
     this._webSocket.emit('changeCardName', {
       room: this.teamId,
       cardId: id,
@@ -256,16 +270,13 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // Handle drag and drop events from the Angular CDK
   drop(event: CdkDragDrop<string[]>, colId, githubColumnId) {
-    console.log(event);
     if (event.previousContainer === event.container) {
       this.overContainers = [];
-      console.log(event.currentIndex);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       let position;
       event.currentIndex == 0
         ? (position = 'top')
         : (position = `after:${event.container.data[event.currentIndex - 1]['githubId']}`);
-      console.log(position);
       this._webSocket.emit('changeCardIndex', {
         room: this.teamId,
         cardId: event.container.data[event.currentIndex]['_id'],
@@ -285,7 +296,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
       event.currentIndex == 0
         ? (position = 'top')
         : (position = `after:${event.container.data[event.currentIndex - 1]['githubId']}`);
-      console.log(position);
       this._webSocket.emit('transferCard', {
         room: this.teamId,
         cardId: event.container.data[event.currentIndex]['_id'],
@@ -315,7 +325,6 @@ export class BoardsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   exit(event: CdkDragExit<string[]>, colId, githubColumnId) {
-    console.log('Left from col:', { colId, githubColumnId });
     this.overContainers.push({ colId, githubColumnId });
     // event.container.exited.subscribe((e) => console.log(e));
     // this._webSocket.emit('removeCardFromColumn', {

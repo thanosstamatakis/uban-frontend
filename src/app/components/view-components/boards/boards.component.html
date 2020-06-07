@@ -19,7 +19,7 @@
   <div class="board">
     <div class="board-wrapper">
       <div class="board-columns" cdkDropListGroup>
-        <div #columns class="board-column" *ngFor="let column of board.columns; let columnIndex = index">
+        <div #columns class="board-column" *ngFor="let column of board?.columns; let columnIndex = index">
           <div class="column-title">
             <input
               (change)="updateColumnName($event.target.value, column._id, column.githubId)"
@@ -67,19 +67,23 @@
       </div>
     </div>
     <div class="messages-body">
-      <!-- <div class="typing-message">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div> -->
       <ng-container *ngFor="let message of messages?.slice().reverse()">
-        <div class="message" [class.me]="message.sender == userId">
-          {{ message.body }}
+        <div class="sent" [class.me]="message.sender._id == userId">
+          <img [src]="message.sender.profilePicture" *ngIf="message.sender._id !== userId" alt="" />
+          <div class="message" [class.me]="message.sender._id == userId">
+            {{ message.body }}
+          </div>
         </div>
       </ng-container>
     </div>
     <form class="input-bar" [formGroup]="messageForm" (ngSubmit)="sendMessage(messageForm.value)">
-      <input #messageInput type="text" formControlName="message" placeholder="Type here..." />
+      <input
+        (focus)="focusedMessage()"
+        #messageInput
+        type="text"
+        formControlName="message"
+        placeholder="Type here..."
+      />
       <button [disabled]="!messageForm.valid" type="submit" class="btn-send">
         <ion-icon name="send-sharp"></ion-icon>
       </button>
@@ -87,5 +91,6 @@
   </div>
 </div>
 <div class="chat-toggle" [@scaleUpDown] *ngIf="!chatActive" (click)="toggleChat()">
+  <div class="unread">{{ unreadMessages == 0 ? '' : unreadMessages }}</div>
   <ion-icon name="chatbubbles-outline"></ion-icon>
 </div>
