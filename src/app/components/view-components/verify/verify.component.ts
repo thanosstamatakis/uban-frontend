@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { User } from '@models/user.model';
 
 @Component({
   selector: 'app-verify',
@@ -11,7 +12,7 @@ export class VerifyComponent implements OnInit {
   payload: string;
   provider: string;
   loading: boolean = true;
-  userData = {};
+  userData: User;
 
   constructor(private _route: ActivatedRoute, private _auth: AuthService, private _router: Router) {
     console.log(window.location.pathname);

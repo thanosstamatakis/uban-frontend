@@ -33,5 +33,7 @@ export class LoginComponent implements OnInit {
     this._oauthService.initImplicitFlow();
   }
 
+  loginWithUban(e) {}
+
   ngOnInit() {}
 }

@@ -30,6 +30,7 @@ export class TeamsComponent implements OnInit {
     this._auth.userData.subscribe((userData: User) => {
       this.userData = userData;
       this._messages.getUnreadMessages(this.userData._id).subscribe((unreadMessages: Array<Object>) => {
+        console.log(unreadMessages);
         let mappedTeams = unreadMessages.map((team) => {
           return team['team'][0];
         });
