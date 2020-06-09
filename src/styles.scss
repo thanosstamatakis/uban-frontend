@@ -3,38 +3,41 @@
 @import url('https://db.onlinewebfonts.com/c/d191325cfe4f374d6f43147fd57ab2d4?family=CeraGR-Bold');
 
 @font-face {
-    font-family: "Cera";
-    src: url("http://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.eot"); /* IE9*/
-    src: url("http://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-    url("http://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.woff2") format("woff2"), /* chrome firefox */
-    url("http://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.woff") format("woff"), /* chrome firefox */
-    url("http://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.ttf") format("truetype"), /* chrome firefox opera Safari, Android, iOS 4.2+*/
-    url("http://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.svg#CeraGR-Regular") format("svg"); /* iOS 4.1- */
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "Cera";
-    src: url("http://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.eot"); /* IE9*/
-    src: url("http://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-    url("http://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.woff2") format("woff2"), /* chrome firefox */
-    url("http://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.woff") format("woff"), /* chrome firefox */
-    url("http://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.ttf") format("truetype"), /* chrome firefox opera Safari, Android, iOS 4.2+*/
-    url("http://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.svg#CeraGR-Bold") format("svg"); /* iOS 4.1- */
-    font-weight: bold;
-    font-style: normal;
+  font-family: 'Cera';
+  src: url('https://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.eot'); /* IE9*/
+  src: url('https://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('https://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.woff2') format('woff2'),
+    /* chrome firefox */ url('https://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.woff') format('woff'),
+    /* chrome firefox */ url('https://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.ttf') format('truetype'),
+    /* chrome firefox opera Safari, Android, iOS 4.2+*/
+      url('https://db.onlinewebfonts.com/t/b2654d24a0afc19dabe02fba17411648.svg#CeraGR-Regular') format('svg'); /* iOS 4.1- */
+  font-weight: normal;
+  font-style: normal;
 }
 
-html, body {
-    height: 100%;
-    font-family: 'Cera';
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    background: #ebebeb;
+@font-face {
+  font-family: 'Cera';
+  src: url('https://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.eot'); /* IE9*/
+  src: url('https://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('https://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.woff2') format('woff2'),
+    /* chrome firefox */ url('https://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.woff') format('woff'),
+    /* chrome firefox */ url('https://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.ttf') format('truetype'),
+    /* chrome firefox opera Safari, Android, iOS 4.2+*/
+      url('https://db.onlinewebfonts.com/t/d191325cfe4f374d6f43147fd57ab2d4.svg#CeraGR-Bold') format('svg'); /* iOS 4.1- */
+  font-weight: bold;
+  font-style: normal;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Cera';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background: #ebebeb;
 }
 
 html {
-    overflow-y: auto !important;
+  overflow-y: auto !important;
 }
